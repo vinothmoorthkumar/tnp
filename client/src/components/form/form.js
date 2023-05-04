@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import {createUser} from "../../services/form";
 
 import {
     Paper,
@@ -21,14 +22,6 @@ export default function Form() {
             .min(6, 'Username must be at least 6 characters')
             .max(20, 'Username must not exceed 20 characters'),
         email: Yup.string().required('Email is required').email('Email is invalid'),
-        password: Yup.string()
-            .required('Password is required')
-            .min(6, 'Password must be at least 6 characters')
-            .max(40, 'Password must not exceed 40 characters'),
-        confirmPassword: Yup.string()
-            .required('Confirm Password is required')
-            .oneOf([Yup.ref('password'), null], 'Confirm Password does not match'),
-        acceptTerms: Yup.bool().oneOf([true], 'Accept Terms is required'),
     });
 
     const {
@@ -41,7 +34,12 @@ export default function Form() {
     });
 
     const onSubmit = async (data) => {
-        console.log(JSON.stringify(data));
+        console.log("data",data)
+        createUser(data)
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
     };
     return <Fragment>
         <Paper>
