@@ -12,12 +12,12 @@ function App() {
         <nav>
             <ul>
               <li><Link to="/">Home</Link></li>
-              <li><Link to="/form">Form</Link></li>
+              <li><Link to="/mobile">Mobile</Link></li>
             </ul>
           </nav>
           <Routes>
             <Route exact path="/" element={<Home/>}/>
-            <Route exact path="/form" element={<Form/>}/>
+            <Route exact path="/mobile" element={<Form/>}/>
           </Routes>
         </BrowserRouter>
       </Container>

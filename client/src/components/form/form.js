@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
-import {createUser} from "../../services/form";
+import {createMobileData} from "../../services/form";
 
 import {
     Paper,
@@ -21,7 +21,7 @@ export default function Form() {
             .required('Username is required')
             .min(6, 'Username must be at least 6 characters')
             .max(20, 'Username must not exceed 20 characters'),
-        email: Yup.string().required('Email is required').email('Email is invalid'),
+        // email: Yup.string().required('Email is required').email('Email is invalid'),
     });
 
     const {
@@ -35,7 +35,7 @@ export default function Form() {
 
     const onSubmit = async (data) => {
         console.log("data",data)
-        createUser(data)
+        createMobileData(data)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -76,7 +76,7 @@ export default function Form() {
                             {errors.username?.message}
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} sm={6}>
+                    {/* <Grid item xs={12} sm={6}>
                         <TextField
                             required
                             id="email"
@@ -90,7 +90,7 @@ export default function Form() {
                         <Typography variant="inherit" color="textSecondary">
                             {errors.email?.message}
                         </Typography>
-                    </Grid>
+                    </Grid> */}
               
                 </Grid>
 
