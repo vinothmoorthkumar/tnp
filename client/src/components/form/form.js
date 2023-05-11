@@ -1,8 +1,13 @@
 import React, { Fragment } from 'react';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { createMobileData } from "../../services/form";
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs, { Dayjs } from 'dayjs';
 import { useState } from "react";
 
 import allPolList from './policeStationList'
@@ -20,20 +25,26 @@ import {
     InputLabel,
     Button,
     MenuItem,
-    Select
+    Select,
+    TextareaAutosize
 } from '@mui/material';
 export default function Form() {
     const validationSchema = Yup.object().shape({
         district: Yup.string().required('District is required'),
         policeStation: Yup.string().required('policeStation is required'),
         fullname: Yup.string().required('Fullname is required'),
-        age:Yup.number().required('Fullname is required'),
-
-        // username: Yup.string()
-        //     .required('Username is required')
-        //     .min(6, 'Username must be at least 6 characters')
-        //     .max(20, 'Username must not exceed 20 characters'),
-        // email: Yup.string().required('Email is required').email('Email is invalid'),
+        age:Yup.number().required('age is required'),
+        address:Yup.string().required('address is required'),
+        caseNo:Yup.number().required('caseNo is required'),
+        year:Yup.number().required('year is required'),
+        mobileMake:Yup.string().required('mobileMake is required'),
+        mobileModel:Yup.string().required('mobileModel is required'),
+        mobileColor:Yup.string().required('mobileColor is required'),
+        slot1Imei:Yup.string().required('slot1Imei is required'),
+        slot2Imei:Yup.string().required('slot2Imei is required'),
+        slot1Number:Yup.string().required('slot1Number is required'),
+        slot2Number:Yup.string().required('slot2Number is required'),
+        lostPlace:Yup.string().required('lostPlace is required'),
     });
     const [polList, setPolList] = useState([]);
 
@@ -44,18 +55,21 @@ export default function Form() {
         watch,
         formState: { errors, isSubmitting },
     } = useForm({
-        // defaultValues: {
-        //     district: '',
-        //     policeStation:''
-        // },
+        defaultValues: {
+            district: '',
+            policeStation:'',
+            lostMobileDateAndTime:dayjs()
+            // lostDateAndtime:{}
+        },
         resolver: yupResolver(validationSchema),
     });
-    watch("policeStation")
+
+    const { field, fieldState } = useController({ control, name: 'lostMobileDateAndTime' });
+
     const onSubmit = async (data) => {
         createMobileData(data)
             .then(res => {
                 console.log(res);
-                console.log(res.data);
             })
     };
 
@@ -149,36 +163,194 @@ export default function Form() {
                             {errors.age?.message}
                         </Typography>
                     </Grid>
-                    {/* <Grid item xs={12} sm={6}>
+                    <Grid item xs={12} sm={12}>
                         <TextField
                             required
-                            id="username"
-                            name="username"
-                            label="Username"
+                            multiline
                             fullWidth
+                            InputProps={{
+                                rows: 3
+                            }}
+                            id="address"
+                            name="address"
+                            label="Address"
                             margin="dense"
-                            {...register('username')}
-                            error={errors.username ? true : false}
+                            {...register('address')}
+                            error={errors.address ? true : false}
                         />
                         <Typography variant="inherit" color="textSecondary">
-                            {errors.username?.message}
+                            {errors.address?.message}
                         </Typography>
-                    </Grid> */}
-                    {/* <Grid item xs={12} sm={6}>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
                         <TextField
                             required
-                            id="email"
-                            name="email"
-                            label="Email"
+                            type="number"
+                            id="caseNo"
+                            name="caseNo"
+                            label="Case No"
                             fullWidth
                             margin="dense"
-                            {...register('email')}
-                            error={errors.email ? true : false}
+                            {...register('caseNo')}
+                            error={errors.caseNo ? true : false}
                         />
                         <Typography variant="inherit" color="textSecondary">
-                            {errors.email?.message}
+                            {errors.caseNo?.message}
                         </Typography>
-                    </Grid> */}
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            type="number"
+                            id="year"
+                            name="year"
+                            label="Year"
+                            fullWidth
+                            margin="dense"
+                            {...register('year')}
+                            error={errors.year ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.year?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            required
+                            id="mobileMake"
+                            name="mobileMake"
+                            label="Mobile Make"
+                            fullWidth
+                            margin="dense"
+                            {...register('mobileMake')}
+                            error={errors.mobileMake ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.mobileMake?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            required
+                            id="mobileModel"
+                            name="mobileModel"
+                            label="Mobile Model"
+                            fullWidth
+                            margin="dense"
+                            {...register('mobileModel')}
+                            error={errors.mobileModel ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.mobileModel?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={4}>
+                        <TextField
+                            required
+                            id="mobileColor"
+                            name="mobileColor"
+                            label="Mobile Color"
+                            fullWidth
+                            margin="dense"
+                            {...register('mobileColor')}
+                            error={errors.mobileColor ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.mobileColor?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            id="slot1Imei"
+                            name="slot1Imei"
+                            label="Slot 1 IMEI"
+                            fullWidth
+                            margin="dense"
+                            {...register('slot1Imei')}
+                            error={errors.slot1Imei ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.slot1Imei?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            id="slot1Number"
+                            name="slot1Number"
+                            label="Slot 1 Number"
+                            fullWidth
+                            margin="dense"
+                            {...register('slot1Number')}
+                            error={errors.slot1Number ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.slot1Number?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            id="slot2Imei"
+                            name="slot2Imei"
+                            label="Slot 2 IMEI"
+                            fullWidth
+                            margin="dense"
+                            {...register('slot2Imei')}
+                            error={errors.slot2Imei ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.slot2Imei?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            id="slot2Number"
+                            name="slot2Number"
+                            label="Slot 2 Number"
+                            fullWidth
+                            margin="dense"
+                            {...register('slot2Number')}
+                            error={errors.slot2Number ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.slot2Number?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <TextField
+                            required
+                            id="lostPlace"
+                            name="lostPlace"
+                            label="Lost Place"
+                            fullWidth
+                            margin="dense"
+                            {...register('lostPlace')}
+                            error={errors.lostPlace ? true : false}
+                        />
+                        <Typography variant="inherit" color="textSecondary">
+                            {errors.mobileModel?.message}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <DemoContainer components={['DateTimePicker']}>
+                                <DateTimePicker 
+                                        // defaultValue={dayjs('2022-04-17T15:30')}
+                                        label="Lost Date and Time"
+                                        {...field}
+                                        renderInput={({params}) => {
+                                          return <TextField {...params} />;
+                                        }}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
+                            <Typography variant="inherit" color="textSecondary">
+                                {errors.slot2Number?.message}
+                            </Typography>
+                    </Grid>
 
                 </Grid>
 
