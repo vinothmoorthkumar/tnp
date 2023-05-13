@@ -3,18 +3,14 @@ import Container from '@mui/material/Container';
 
 import Home from '../src/components/home/home';
 import Form from '../src/components/form/form';
+import Header from '../src/shared/Header';
 
 function App() {
   return (
     <div>
       <Container fixed>
         <BrowserRouter>
-        <nav>
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/mobile">Mobile</Link></li>
-            </ul>
-          </nav>
+        <Header />
           <Routes>
             <Route exact path="/" element={<Home/>}/>
             <Route exact path="/mobile" element={<Form/>}/>
