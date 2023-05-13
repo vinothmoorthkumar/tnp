@@ -7,6 +7,8 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import Snackbar from "@mui/material/Snackbar";
+import Alert from '@mui/material/Alert';
 import dayjs, { Dayjs } from 'dayjs';
 import { useState } from "react";
 
@@ -47,6 +49,7 @@ export default function Form() {
         lostPlace:Yup.string().required('lostPlace is required'),
     });
     const [polList, setPolList] = useState([]);
+    const [open, setOpen] = React.useState(false);
 
     const {
         register,
@@ -70,6 +73,7 @@ export default function Form() {
         createMobileData(data)
             .then(res => {
                 console.log(res);
+                setOpen(true);
             })
     };
 
@@ -77,6 +81,10 @@ export default function Form() {
     const getPoliceListByDist = (event) => {
         setPolList(allPolList[event.target.value]||[])
     };
+
+    const handleClose = () => {
+        setOpen(false);
+      };
 
     return <Fragment>
         <Paper>
@@ -364,6 +372,11 @@ export default function Form() {
                     </Button>
                 </Box>
             </Box>
+            <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
+                <Alert severity="success">
+                    Successfully Updated
+                </Alert>
+            </Snackbar>
         </Paper>
     </Fragment>
 }

@@ -9,10 +9,14 @@ router.get("/api/mobile", async (req, res) => {
 })
 
 router.post("/api/mobile", async (req, res) => {
-    console.log("@@@@@",req.body)
-    res.send(req.body)
-	// const mobile = await Mobile.find()
-	// res.send(mobile)
+	  
+	var new_mobileData = new Mobile(req.body)
+	  
+	new_mobileData.save().then(result => {
+        console.log(result)
+		res.send(req.body)
+
+    })
 })
 
 module.exports = router
