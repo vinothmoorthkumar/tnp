@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 // parse application/json
 app.use(bodyParser.json())
 app.use(morgan('combined'))
+
 app.use("/",routes)
 mongoose
 	// .connect("mongodb://localhost:27017/tnp", { useNewUrlParser: true })
