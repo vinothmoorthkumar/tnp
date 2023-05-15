@@ -2,6 +2,7 @@ import React, { Fragment } from 'react';
 import { useForm, useController } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
+import { useNavigate} from "react-router-dom";
 import { createMobileData } from "../../services/form";
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -31,6 +32,8 @@ import {
     TextareaAutosize
 } from '@mui/material';
 export default function Form() {
+    const navigate = useNavigate();
+
     const validationSchema = Yup.object().shape({
         district: Yup.string().required('District is required'),
         policeStation: Yup.string().required('policeStation is required'),
@@ -74,6 +77,7 @@ export default function Form() {
             .then(res => {
                 console.log(res);
                 setOpen(true);
+                navigate("/");
             })
     };
 

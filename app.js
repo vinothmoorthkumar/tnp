@@ -4,7 +4,7 @@ const app = express()
 const mongoose = require("mongoose") // new
 var morgan = require('morgan')
 const routes = require("./routes") // new
-
+const path= require("path");
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
@@ -20,6 +20,8 @@ mongoose
 		})
 	})
 
-app.get("/", function(req, res) {
-  res.send("It's working!")
-})
+app.use(express.static('client/build'));
+
+app.get('*', (req, res) => {
+	res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+});
