@@ -1,7 +1,6 @@
 import axios from "axios";
 
 export async function getAllMobileData() {
-
     try{
         const response = await axios.get('/api/mobile');
         return response.data;

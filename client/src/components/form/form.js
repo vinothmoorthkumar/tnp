@@ -84,7 +84,7 @@ export default function Form() {
 
     const handleClose = () => {
         setOpen(false);
-      };
+    };
 
     return <Fragment>
         <Paper>
